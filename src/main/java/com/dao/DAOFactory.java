@@ -12,7 +12,7 @@ public class DAOFactory {
 
 		String url = "jdbc:h2:tcp://localhost/~/test";
 		String user = "sa";
-		String password = "";
+		String password = "sa";
 		Connection connection = null;
 		
 		try {
