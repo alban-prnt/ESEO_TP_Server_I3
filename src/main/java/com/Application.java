@@ -9,7 +9,8 @@ public class Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
-		System.out.println("Mon application a d�marr�");
+		System.out.println("Mon application a demarree");
+	    
 	}
 
 }
