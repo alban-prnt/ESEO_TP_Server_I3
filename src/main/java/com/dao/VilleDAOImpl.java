@@ -1,5 +1,6 @@
 package com.dao;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -7,15 +8,19 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Repository;
 
+import com.config.JDBCConfiguration;
 import com.dto.Ville;
 
 @Repository
 public class VilleDAOImpl implements VilleDAO {
 	
+	Connection con = DAOFactory.getConnection();
+	
 	@Override
 	public ArrayList<Ville> findVille(String codeCommune) {
-		
 		ArrayList<Ville> villesListe = new ArrayList<Ville>();
+		
+		
 		String requete;
 		
 		if (codeCommune == null) {
@@ -24,11 +29,7 @@ public class VilleDAOImpl implements VilleDAO {
 			requete = "SELECT * FROM ville_france WHERE code_commune_insee='" + codeCommune + "'";
 		}
 		
-		try {
-			Statement stmt = DAOFactory.getInstance().getConnection().createStatement();
-			ResultSet rs = stmt.executeQuery(requete);
-	        
-	        
+		try(Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(requete);) {	
             
             while ( rs.next() ) {
             	Ville ville = new Ville();
@@ -63,7 +64,7 @@ public class VilleDAOImpl implements VilleDAO {
 		System.out.println(requete);
 		
 		try {
-			Statement stmt = DAOFactory.getInstance().getConnection().createStatement();
+			Statement stmt = con.createStatement();
 			int rs = stmt.executeUpdate(requete);
 			villePost = (rs > 0);
 		
@@ -82,7 +83,7 @@ public class VilleDAOImpl implements VilleDAO {
 		String requete = "UPDATE ville_france SET Code_commune_INSEE = '" + ville.getCodeCommune() + "', Nom_commune = '" + ville.getNomCommune() + "', Code_postal = '" + ville.getCodePostal() + "', Libelle_acheminement = '" + ville.getLibelleAcheminement() + "', Ligne_5 = '" + ville.getLigne() + "', Latitude = '" + ville.getLatitude() + "', Longitude = '" + ville.getLongitude() + "' WHERE Code_commune_INSEE = '" + ville.getCodeCommune() + "';";
 
 		try {
-			Statement stmt = DAOFactory.getInstance().getConnection().createStatement();
+			Statement stmt = con.createStatement();
 			int rs = stmt.executeUpdate(requete);
 			villePut = (rs > 0);
 
@@ -99,7 +100,7 @@ public class VilleDAOImpl implements VilleDAO {
 		String requete = "DELETE FROM ville_france WHERE Code_commune_INSEE = '" + ville.getCodeCommune() + "';";
 
 		try {
-			Statement stmt = DAOFactory.getInstance().getConnection().createStatement();
+			Statement stmt = con.createStatement();
 			int rs = stmt.executeUpdate(requete);
 			villeDel = (rs > 0);
 		} 

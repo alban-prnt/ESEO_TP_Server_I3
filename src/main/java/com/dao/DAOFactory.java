@@ -4,35 +4,26 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DAOFactory {
-    private String url;
-    private String username;
-    private String password;
+import org.springframework.context.annotation.Bean;
 
-    DAOFactory(String url, String username, String password) {
-        this.url = url;
-        this.username = username;
-        this.password = password;
-    }
+public class DAOFactory {  
+    @Bean
+	public static Connection getConnection() {
 
-    public static DAOFactory getInstance() {
-        try {
-            Class.forName("org.h2.Driver");
-        } catch (ClassNotFoundException e) {
-
-        }
-
-        DAOFactory instance = new DAOFactory(
-                "jdbc:h2:tcp://localhost/~/test", "sa", "");
-        return instance;
-    }
-
-    public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, username, password);
-    }
-
-    // Récupération du Dao
-    public VilleDAO getUtilisateurDao() {
-        return new VilleDAOImpl();
-    }
+		String url = "jdbc:h2:tcp://localhost/~/test";
+		String user = "sa";
+		String password = "";
+		Connection connection = null;
+		
+		try {
+		
+            if(connection == null) {
+            	connection = DriverManager.getConnection(url, user, password);
+            }
+		} catch (SQLException e1) {
+			System.out.println("Erreur pendant la creation de la connexion à la BDD." + e1);
+			e1.printStackTrace();
+		}
+		return connection;
+	}
 }
