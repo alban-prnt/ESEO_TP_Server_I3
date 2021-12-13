@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Repository;
 
-import com.config.JDBCConfiguration;
 import com.dto.Ville;
 
 @Repository
@@ -62,9 +61,7 @@ public class VilleDAOImpl implements VilleDAO {
 		String requete = "INSERT INTO ville_france (Code_commune_INSEE, Nom_commune, Code_postal, Libelle_acheminement, Ligne_5, Latitude, Longitude) VALUES ('" + ville.getCodeCommune() + "', '" + ville.getNomCommune() + "', '" + ville.getCodePostal() + "', '" + ville.getLibelleAcheminement() + "', '" + ville.getLibelleAcheminement() + "', '" + ville.getLatitude() + "', '" + ville.getLongitude() + "');";	
 		
 		System.out.println(requete);
-		
-		try {
-			Statement stmt = con.createStatement();
+		try(Statement stmt = con.createStatement(); ) {
 			int rs = stmt.executeUpdate(requete);
 			villePost = (rs > 0);
 		
@@ -82,8 +79,7 @@ public class VilleDAOImpl implements VilleDAO {
 		boolean villePut = false;
 		String requete = "UPDATE ville_france SET Code_commune_INSEE = '" + ville.getCodeCommune() + "', Nom_commune = '" + ville.getNomCommune() + "', Code_postal = '" + ville.getCodePostal() + "', Libelle_acheminement = '" + ville.getLibelleAcheminement() + "', Ligne_5 = '" + ville.getLigne() + "', Latitude = '" + ville.getLatitude() + "', Longitude = '" + ville.getLongitude() + "' WHERE Code_commune_INSEE = '" + ville.getCodeCommune() + "';";
 
-		try {
-			Statement stmt = con.createStatement();
+		try(Statement stmt = con.createStatement(); ) {
 			int rs = stmt.executeUpdate(requete);
 			villePut = (rs > 0);
 
@@ -99,8 +95,7 @@ public class VilleDAOImpl implements VilleDAO {
 		boolean villeDel = false;
 		String requete = "DELETE FROM ville_france WHERE Code_commune_INSEE = '" + ville.getCodeCommune() + "';";
 
-		try {
-			Statement stmt = con.createStatement();
+		try(Statement stmt = con.createStatement(); ) {
 			int rs = stmt.executeUpdate(requete);
 			villeDel = (rs > 0);
 		} 
