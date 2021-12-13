@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ville {
-	
 	public String code_commune_INSEE;
 	public String nom_commune;
 	public String code_postal;
